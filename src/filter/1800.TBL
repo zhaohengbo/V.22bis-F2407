@@ -1,0 +1,20 @@
+; table for guard tone
+; sampling: 9600Hz   Tone: %.0Hz   Amplitude: %4X
+TGuard
+      .word       0h
+      .word    7640h
+      .word    5A81h
+      .word    CF05h
+      .word    8001h
+      .word    CF05h
+      .word    5A81h
+      .word    7640h
+      .word       0h
+      .word    89C0h
+      .word    A57Fh
+      .word    30FBh
+      .word    7FFFh
+      .word    30FBh
+      .word    A57Fh
+      .word    89C0h
+; End of guard tone table

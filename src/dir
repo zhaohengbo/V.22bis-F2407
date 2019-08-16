@@ -1,0 +1,63 @@
+Directories
+-----------
+
+58c8x    : for 58C8x application
+cid      : Caller ID dsp
+filter   : filters definition
+fsk      : DSP for V21/V23
+v22      : DSP for V22/V22bis
+
+misc. files
+-----------
+
+MAKEFILE       : make file
+SETVARS.BAT    : system setting for makefile
+MODEM.CMD      : command file for linker
+modem.cfg      : for C2xx DSK tools
+level.doc      : information concerning carrier detect and transmit levels
+Release.doc    : information concerning release
+MODEM.DSK      : executable file for C2xx DSK (DSK format)
+modem.out      : executable file in coff format
+coff2dsk2.exe  : converter from coff to DSK format
+vRts2xx.lib    : modified C2cc library for linker with modified stack
+MODEM.MAP      : map file from linker
+read.me
+essai.wks      : work space for code composer
+
+assembler files
+---------------
+
+BIQUAD.ASM     : DSP for tone detector
+CID_MAIN.ASM   : management of Caller ID
+CID_PROT.ASM   : protocol for Caller ID
+DTMF.ASM       : DTMF generator
+initdsk.asm    : initialisation for C2xx DSK
+MAIN.ASM       : global initialisation, sample interrupt, misc.
+notch.asm      : DSP for tone detection
+PrintTab.asm   : routine and table for message in AT
+UART.ASM       : software uart for 58c8x
+v22it.asm      : sample/task management for V22/V22bis
+DSP20.I8X
+MSP58C80.I8X
+CID.INC
+CID_VAR.INC
+COMMON.INC     : common constant for C and ASM (cf. common.h)
+GLOBAL.INC
+pathway.inc    : include file for C2xx DSK
+V23.INC
+
+C files
+-------
+
+CALL.C         : call progress management
+CID.C          : Caller ID management
+initFilt.c     : initialisation of tone detector
+MAINC.C        : AT command interpretation
+V21V23.C       : V21/V23 management
+V22B.C         : V22/V22bis connection management
+COMMON.H       : constant definition common with ASM (cf. common.inc)
+DTMF.H
+FILTERS.H
+PARAM.H
+
+

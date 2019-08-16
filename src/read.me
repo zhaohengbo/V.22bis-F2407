@@ -1,0 +1,39 @@
+Installation of C2xx DSK version
+
+In this directory you will found the file modem.dsk. This file must be put
+in the flash of the C2xx by using the software sfloader.exe. Sfloader.exe 
+is in the directory \pathway\206bsp\sfloader of the tools install by the 
+pathway software.
+
+After installation of the modem software in the flash this software is able
+to run after a reset of the board by puting a strap between pin 21 and 22
+of the j11 connector. This operation connect BIO to the ground to start after
+a reset at address 4000h (where is the modem software).
+
+The serial interface will transport the AT command set. This interface is
+configured in 2400bit/s 8bit no parity one stop, no flux control. The DTR
+pin (pin 5 on 9 pins connector) must be not connected or connected to a low
+level. If the DTR is connected to a high level the DSP stay in reset mode.
+
+When DSP go out of reset it sends to the serial interface "Hello world". The
+AT interface is now working.
+
+The ring detection function has been disconnected. This disconnection is in
+the file cid_main.asm line 35. To enable the ring detection the branch must
+be suppressed and the ring signal must be send to the right I/O (BI and
+RING_MASK in the 58C8x board). So access to BI must be modified.
+
+The transmit gain of this version (DSK) is 6dB lower than the max value. This
+made by modifying GRef. GRef is 5 for DSK and 10 for 58C8x. GRef must be
+modified in  common.inc and common.h.
+
+The receive level configuration is targeted to saturate converter for an input
+V22bis signal of around -3dBm. Saturation of the converter corresponds to
+samples up to 0x7fff.
+
+The file dir contains the list of the files and a small description of their
+use.
+
+To create a 58C8x version files in directory 58C8x must be put in the root
+directory.
+

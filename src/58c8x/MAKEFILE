@@ -1,0 +1,139 @@
+########################
+#
+# File: makefile for V22bis
+# 58c8x version
+#
+########################
+# Definitions
+########################
+
+# -k keep asm
+# -g symbol for debugger
+# -s include c lines in asm
+# -o3 max optimization
+# -ol0 if redefinition of standard functions (isdigit)
+# -op0 if function used in other files
+# -pr error listing
+# -ms optimize for space
+# -al asm listing
+
+CC     = dspcl -g -o3 -ol0 -op0 -rAR6 -rAR7 -s -v25     
+ASM    = dspa
+ARCH   = dspar -r
+LINK   = dsplnk -v0 -x
+
+AFLAGS = -l -s -v25
+
+
+########################
+# Builds                
+########################
+
+modem.out: makefile modem.cmd\
+        biquad.obj call.obj cid.obj cid_main.obj cid_prot.obj demod.obj dsp20.obj\
+        dsp20ini.obj dtmf.obj fskfir.obj CPE.obj initFilt.obj main.obj\
+        mainc.obj modul.obj notch.obj PrintTab.obj RXV21F.obj RXV23F.obj TXFSKF.obj\
+        uart.obj v14.obj v14c.obj v14t.obj\
+        V21V23.obj v22b.obj
+    copy v22\*.obj *.obj
+    copy cid\*.obj *.obj
+    copy fsk\*.obj *.obj
+    $(LINK) modem.cmd
+    del v22\*.obj
+    del v22\*.lst
+    del v22\*.bak
+    del cid\*.obj
+    del cid\*.lst
+    del cid\*.bak
+    del fsk\*.obj
+    del fsk\*.lst
+    del fsk\*.bak
+    del *.lst
+    del *.bak
+
+
+biquad.obj: makefile biquad.asm global.inc common.inc
+    $(ASM) biquad.asm $(AFLAGS)
+
+call.obj: makefile call.c common.h filters.h
+    $(CC) call
+
+cid.obj: makefile cid.c common.h
+    $(CC) cid
+
+cid_main.obj: makefile cid_main.asm *.i8x global.inc
+    $(ASM) cid_main.asm $(AFLAGS)
+
+cid_prot.obj: makefile cid_prot.asm *.i8x global.inc
+    $(ASM) cid_prot.asm $(AFLAGS)
+
+demod.obj: makefile v22\demod.asm *.i8x global.inc v22\cos.asm
+    $(ASM) v22\demod.asm $(AFLAGS)
+
+dsp20.obj: makefile v22\*.tbl *.i8x global.inc \
+         v22\AGC.ASM v22\CCIDTM.ASM v22\COSGEN.ASM v22\DIFDEC.ASM v22\DLUPDT.ASM\
+         v22\DSP20.ASM v22\ENCODE.ASM v22\IFIR.ASM v22\INTERP.ASM\       
+         v22\PLL.ASM v22\PLL2.ASM v22\QUAN24.ASM v22\QUAN12.ASM\
+         v22\RFIR.ASM v22\RTASKC.ASM v22\RXIIR.ASM v22\SINGEN.ASM\
+         v22\SXDET.ASM v22\TMRCVC.ASM v22\UPDATE.ASM\
+         v22\UPERR.ASM
+    $(ASM) v22\dsp20.asm $(AFLAGS)
+
+dsp20ini.obj: makefile v22\dsp20ini.asm *.i8x global.inc common.inc
+    $(ASM) v22\dsp20ini.asm $(AFLAGS)
+
+dtmf.obj: makefile dtmf.asm global.inc common.inc
+    $(ASM) dtmf.asm $(AFLAGS)
+
+fskfir.obj: makefile fsk\fskfir.asm *.i8x global.inc common.inc
+    $(ASM) fsk\fskfir.asm $(AFLAGS)
+
+CPE.obj: makefile cid\CPE.asm *.i8x global.inc
+    $(ASM) cid\CPE.asm $(AFLAGS)
+
+initFilt.obj: makefile initFilt.c filters.h
+    $(CC) initFilt
+
+main.obj: makefile main.asm v22it.asm global.inc *.i8x common.inc
+    $(ASM) main.asm $(AFLAGS)
+
+mainc.obj: makefile mainc.c common.h dtmf.h
+    $(CC) mainc
+
+modul.obj: makefile v22\modul.asm *.i8x global.inc
+    $(ASM) v22\modul.asm $(AFLAGS)
+
+notch.obj: makefile notch.asm global.inc 
+    $(ASM) notch.asm $(AFLAGS)
+
+PrintTab.obj: makefile PrintTab.asm  
+    $(ASM) PrintTab.asm $(AFLAGS)
+
+RXV21F.obj: makefile fsk\RXV21F.asm global.inc common.inc
+    $(ASM) fsk\RXV21F.asm $(AFLAGS)
+
+RXV23F.obj: makefile fsk\RXV23F.asm global.inc V23.inc common.inc
+    $(ASM) fsk\RXV23F.asm $(AFLAGS)
+
+TXFSKF.obj: makefile fsk\TXFSKF.asm global.inc common.inc 
+    $(ASM) fsk\TXFSKF.asm $(AFLAGS)
+
+uart.obj: makefile uart.asm *.i8x global.inc
+    $(ASM) uart.asm $(AFLAGS)
+
+V14.obj: makefile v22\v14.asm *.i8x global.inc
+    $(ASM) v22\v14.asm $(AFLAGS)
+
+V14c.obj: makefile v22\v14c.asm *.i8x global.inc
+    $(ASM) v22\v14c.asm $(AFLAGS)
+
+V14t.obj: makefile v22\v14t.asm *.i8x global.inc
+    $(ASM) v22\v14t.asm $(AFLAGS)
+
+V21V23.obj: makefile V21V23.c common.h filters.h
+    $(CC) V21V23
+
+V22b.obj: makefile V22b.c common.h
+    $(CC) v22b
+
+

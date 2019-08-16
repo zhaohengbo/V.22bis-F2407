@@ -1,0 +1,652 @@
+*****************************************************
+TMS320C1x/C2x/C2xx/C5x COFF Linker           Version 6.60
+*****************************************************
+Thu Oct  1 09:47:18 1998
+
+OUTPUT FILE NAME:   <modem.out>
+ENTRY POINT SYMBOL: "_c_int0"  address: 00007971
+
+
+MEMORY CONFIGURATION
+
+           name      origin     length     attributes     fill
+         --------   --------   ---------   ----------   --------
+PAGE 0: VECTS      00004000   000000020      RWIX      
+         PMEM       00004020   000004fe0      RWIX      
+
+PAGE 1: B2         00000060   000000020      RWIX      
+         B0L        00000200   0000000f8      RWIX      
+         B0L2       000002f8   000000008      RWIX      
+         B0H        00000300   000000100      RWIX      
+         B1         00001200   000000300      RWIX      
+
+
+SECTION ALLOCATION MAP
+
+ output                                  attributes/
+section   page    origin      length       input sections
+--------  ----  ----------  ----------   ----------------
+vectors    0    00004000    00000002     
+                  00004000    00000002     main.obj (vectors)
+
+.cinit     0    00004020    00000019     
+                  00004020    00000018     mainc.obj (.cinit)
+                  00004038    00000001     --HOLE-- [fill = 0000]
+
+.text      0    00004039    0000396f     
+                  00004039    000001e3     biquad.obj (.text)
+                  0000421c    00000310     call.obj (.text)
+                  0000452c    0000014f     cid.obj (.text)
+                  0000467b    000000c3     cid_main.obj (.text)
+                  0000473e    00000216     cid_prot.obj (.text)
+                  00004954    000000a2     CPE.obj (.text)
+                  000049f6    0000024e     demod.obj (.text)
+                  00004c44    00000ffe     dsp20.obj (.text)
+                  00005c42    0000004f     dsp20ini.obj (.text)
+                  00005c91    00000083     dtmf.obj (.text)
+                  00005d14    000000a2     fskfir.obj (.text)
+                  00005db6    00000136     initFilt.obj (.text)
+                  00005eec    000002a1     main.obj (.text)
+                  0000618d    0000065c     mainc.obj (.text)
+                  000067e9    000001d6     modul.obj (.text)
+                  000069bf    00000024     notch.obj (.text)
+                  000069e3    00000081     PrintTab.obj (.text)
+                  00006a64    00000153     RXV21F.obj (.text)
+                  00006bb7    00000140     RXV23F.obj (.text)
+                  00006cf7    00000166     TXFSKF.obj (.text)
+                  00006e5d    00000176     uart.obj (.text)
+                  00006fd3    0000010d     v14.obj (.text)
+                  000070e0    00000036     v14c.obj (.text)
+                  00007116    0000013d     v14t.obj (.text)
+                  00007253    00000201     V21V23.obj (.text)
+                  00007454    0000051d     v22b.obj (.text)
+                  00007971    00000037     vrts2xx.lib : boot.obj (.text)
+
+RomData    0    000079a8    0000001e     
+                  000079a8    0000001e     CPE.obj (RomData)
+
+Modem      1    00000200    000000f3     UNINITIALIZED
+                  00000200    00000003     dsp20.obj (mpage4_1)
+                  00000203    00000077     dsp20.obj (mpage4)
+                  0000027a    00000001     modul.obj (mpage4)
+                  0000027b    00000078     dsp20.obj (reloc)
+
+CPTD       1    00000200    0000005d     UNINITIALIZED
+                  00000200    00000005     RXV23F.obj (X52)
+                  00000205    00000053     biquad.obj (Filter)
+                  00000258    00000005     notch.obj (Notch)
+
+FSKV23     1    00000200    000000e7     UNINITIALIZED
+                  00000200    00000005     RXV23F.obj (X53)
+                  00000205    0000005d     RXV23F.obj (V23)
+                  00000280    00000026     cid_prot.obj (CID_Buf)
+                  000002a6    00000001     CPE.obj (CID_Var)
+                  000002a7    00000011     cid_prot.obj (CID_Var)
+                  000002b8    00000001     cid_prot.obj (CID_Temp)
+                  000002b9    0000002e     fskfir.obj (V23FIR)
+
+FSKV21     1    00000200    00000072     UNINITIALIZED
+                  00000200    00000005     RXV23F.obj (X54)
+                  00000205    0000001b     RXV21F.obj (V21)
+                  00000220    00000052     fskfir.obj (V21FIR)
+
+TStat      1    00000060    00000014     UNINITIALIZED
+                  00000060    00000010     dsp20.obj (TStat)
+                  00000070    00000004     uart.obj (TStat)
+
+SMain      1    000002f8    00000008     UNINITIALIZED
+                  000002f8    00000002     dsp20.obj (SMain)
+                  000002fa    00000006     main.obj (SMain)
+
+mpage5     1    00000300    00000001     UNINITIALIZED
+                  00000300    00000001     dsp20.obj (mpage5)
+
+TSave      1    00000301    00000034     UNINITIALIZED
+                  00000301    00000027     dsp20.obj (TSave)
+                  00000328    0000000d     uart.obj (TSave)
+
+ModBuf     1    00000335    0000001c     UNINITIALIZED
+                  00000335    0000001c     dsp20.obj (ModBuf)
+
+Uart0      1    00001200    00000022     UNINITIALIZED
+                  00001200    00000022     dsp20.obj (Uart0)
+
+Uart1      1    00001222    00000015     UNINITIALIZED
+                  00001222    00000015     dsp20.obj (Uart1)
+
+SUart      1    00001237    0000003c     UNINITIALIZED
+                  00001237    0000003c     uart.obj (SUart)
+
+.bss       1    00001280    00000031     UNINITIALIZED
+                  00001280    0000002d     mainc.obj (.bss)
+                  000012ad    00000000     fskfir.obj (.bss)
+                  000012ad    00000000     dtmf.obj (.bss)
+                  000012ad    00000000     dsp20ini.obj (.bss)
+                  000012ad    00000000     biquad.obj (.bss)
+                  000012ad    00000000     main.obj (.bss)
+                  000012ad    00000000     initFilt.obj (.bss)
+                  000012ad    00000000     dsp20.obj (.bss)
+                  000012ad    00000000     cid_main.obj (.bss)
+                  000012ad    00000000     cid.obj (.bss)
+                  000012ad    00000000     call.obj (.bss)
+                  000012ad    00000000     demod.obj (.bss)
+                  000012ad    00000000     CPE.obj (.bss)
+                  000012ad    00000000     cid_prot.obj (.bss)
+                  000012ad    00000000     v14c.obj (.bss)
+                  000012ad    00000000     v14.obj (.bss)
+                  000012ad    00000000     uart.obj (.bss)
+                  000012ad    00000000     vrts2xx.lib : boot.obj (.bss)
+                  000012ad    00000000     V21V23.obj (.bss)
+                  000012ad    00000000     v14t.obj (.bss)
+                  000012ad    00000000     PrintTab.obj (.bss)
+                  000012ad    00000000     notch.obj (.bss)
+                  000012ad    00000000     modul.obj (.bss)
+                  000012ad    00000000     TXFSKF.obj (.bss)
+                  000012ad    00000000     RXV23F.obj (.bss)
+                  000012ad    00000000     RXV21F.obj (.bss)
+                  000012ad    00000004     v22b.obj (.bss)
+
+.data      1    00001200    00000000     UNINITIALIZED
+                  00001200    00000000     biquad.obj (.data)
+                  00001200    00000000     vrts2xx.lib : boot.obj (.data)
+                  00001200    00000000     v22b.obj (.data)
+                  00001200    00000000     V21V23.obj (.data)
+                  00001200    00000000     v14t.obj (.data)
+                  00001200    00000000     v14c.obj (.data)
+                  00001200    00000000     v14.obj (.data)
+                  00001200    00000000     uart.obj (.data)
+                  00001200    00000000     TXFSKF.obj (.data)
+                  00001200    00000000     RXV23F.obj (.data)
+                  00001200    00000000     RXV21F.obj (.data)
+                  00001200    00000000     PrintTab.obj (.data)
+                  00001200    00000000     notch.obj (.data)
+                  00001200    00000000     modul.obj (.data)
+                  00001200    00000000     mainc.obj (.data)
+                  00001200    00000000     main.obj (.data)
+                  00001200    00000000     initFilt.obj (.data)
+                  00001200    00000000     fskfir.obj (.data)
+                  00001200    00000000     dtmf.obj (.data)
+                  00001200    00000000     dsp20ini.obj (.data)
+                  00001200    00000000     dsp20.obj (.data)
+                  00001200    00000000     demod.obj (.data)
+                  00001200    00000000     CPE.obj (.data)
+                  00001200    00000000     cid_prot.obj (.data)
+                  00001200    00000000     cid_main.obj (.data)
+                  00001200    00000000     cid.obj (.data)
+                  00001200    00000000     call.obj (.data)
+
+.stack     1    000012b1    00000065     UNINITIALIZED
+                  000012b1    00000000     vrts2xx.lib : boot.obj (.stack)
+
+EndRam     1    00001273    00000001     UNINITIALIZED
+                  00001273    00000001     main.obj (EndRam)
+
+DTMF       1    00000351    00000007     UNINITIALIZED
+                  00000351    00000007     dtmf.obj (DTMF)
+
+FSK        1    00001316    00000014     UNINITIALIZED
+                  00001316    0000000b     RXV21F.obj (FSK)
+                  00001321    00000009     TXFSKF.obj (FSK)
+
+SIN        1    00001274    00000003     UNINITIALIZED
+                  00001274    00000003     TXFSKF.obj (SIN)
+
+CIDb0      1    0000132a    0000002b     UNINITIALIZED
+                  0000132a    0000002b     CPE.obj (CIDb0)
+
+Aic        1    00001277    00000004     UNINITIALIZED
+                  00001277    00000004     main.obj (Aic)
+
+.const     0    000079c6    00000045     RUN ADDR = 00001355
+                  000079c6    00000000     vrts2xx.lib : boot.obj (.c_mark)
+                  000079c6    00000005     cid.obj (.const)
+                  000079cb    00000040     mainc.obj (.const)
+
+.switch    0    00004002    00000010     
+                  00004002    00000008     cid.obj (.switch)
+                  0000400a    00000008     mainc.obj (.switch)
+
+X51        1    00000074    00000005     UNINITIALIZED
+                  00000074    00000005     RXV23F.obj (X51)
+
+
+GLOBAL SYMBOLS
+
+address  name                             address  name
+-------- ----                             -------- ----
+00001280 .bss                             00000004 DSmC12
+00001200 .data                            00000020 DSmC24
+00004039 .text                            00000045 __const_length
+0000131d AGCGAIN                          00000060 _CID
+0000131c AGCSamp                          00000061 FifoOutCnt
+00005b43 AGC                              00000062 ItPage0
+0000131f AGCTEMP                          00000065 __STACK_SIZE
+00006e69 AUInit                           0000006d _Tim0
+00000227 AVECNT                           0000006e POsStack
+0000026e AVESQR                           0000006f P0Tmp1
+00006b08 AgcFSK                           00000070 ItSst1
+00000270 BDCNTR                           00000071 ItSst
+0000025d BETA                             00000072 It2Sst1
+00001224 BIT_COUNT                        00000073 It2Sst
+00006bb7 BandPasCoef                      00000077 Total4
+00001232 Bit4_V22                         00000200 TxTmp0
+00001231 Bit4                             00000201 TxTmp1
+000002ad BufNum                           00000202 TxTmp2
+00001221 BufferTransLast                  00000203 STATUS
+00001211 BufferTrans                      00000203 begin4
+000002b7 Buffer_ptr                       00000204 XDATA
+000041d0 BusyFilt                         00000205 ONE
+00000253 C0I                              00000205 _DialFilter
+00000249 C0R                              00000206 S1CNT
+00000257 C4I                              00000207 STWRD
+0000024d C4R                              00000208 Shape
+00000258 C5I                              00000209 NbSamp
+0000024e C5R                              0000020a ModulSeq
+0000025c C9I                              0000020b XBITS
+00000252 C9R                              0000020c XOUT
+000057b4 CCI                              0000020d RIN
+000002a6 CID_Byte                         0000020e RXFRQ
+000002a9 CID_Checksum                     0000020f RXPHS
+000002aa CID_Len                          00000210 PtSin
+000002ab CID_ParmLen                      00000211 PtCos
+000002b8 CID_temp                         00000212 ShiftI
+00005b2e CMULT1                           00000213 _AnswerFilter
+00000279 CNVFL                            00000213 ShiftR
+000058a0 COSGEN                           00000214 LASTQ
+000056b3 COSOFF                           00000215 RPQUAD
+00001229 CPT64                            00000216 TMP4
+00004063 CPTD                             00000217 TMP5
+0000496d CheckCPE                         00000218 URDEL1
+00001211 Cmd1                             00000219 TMP2
+00001212 Cmd2                             0000021a WRDEL1
+00000343 CosBuf                           0000021b WRDEL2
+0000122c D0201                            0000021c TMP0
+0000122b D1803                            0000021d XRM1
+00004bba DCos12                           0000021e XRM2
+00004b78 DCos24                           0000021f UIDEL1
+000059c0 DLUPDT                           00000220 TMP3
+00004bbf DSin12                           00000220 V21A_D0
+00004b99 DSin24                           00000221 _V21Filter
+00000004 DSmC12                           00000221 WIDEL1
+00000020 DSmC24                           00000222 WIDEL2
+00001320 DecCOUNT                         00000223 TMP1
+000049f6 DemodSymb                        00000224 XIM1
+00001227 Descram0                         00000225 XIM2
+00001228 Descram1                         00000226 STAT2
+00005ce9 Dtmf                             00000227 AVECNT
+00000261 EIMAG                            00000228 TMFUNC
+0000585e ENCODE                           00000229 IRCNT
+00000249 ENDIN                            0000022a TIMIND
+00000260 EREAL                            0000022b V23IN
+00000300 ETmp1                            0000022b IR0
+00006149 End_V21                          0000022c IR1
+00006149 End_V23                          0000022d IR2
+00001200 FIRST_OUT                        0000022e IR3
+00000269 FROFF                            0000022f _V23Filter
+0000131b FSKC                             0000022f II0
+0000131a FSKCHAR                          00000230 II1
+00001319 FSKCOUNT                         00000231 II2
+00006b4f FSKDec                           00000232 II3
+00000297 FifoIn                           00000233 XTMPR
+00000061 FifoOutCnt                       00000234 X0R
+0000027b FifoOut                          00000239 X5R
+000002f8 ForDA                            0000023c X8R
+000002f9 FromAD                           0000023d X9R
+0000716c Get2                             0000023d _DialThreshold
+00007159 Get4                             0000023e _AnswerThreshold
+0000026f HYST                             0000023e XTMPI
+00006179 IB00                             0000023f _V23Threshold
+00006187 IB01                             0000023f X0I
+00005b18 IFIR                             00000240 _V21Threshold
+0000022f II0                              00000241 _CptdFilter
+00000230 II1                              00000243 _TotIn
+00000231 II2                              00000244 _TotOut
+00000232 II3                              00000244 X5I
+00001225 IN                               00000245 _DialIn
+0000022b IR0                              00000246 _DialOut
+0000022c IR1                              00000247 _DialShift
+0000022d IR2                              00000247 X8I
+0000022e IR3                              00000247 V21AOut
+00000229 IRCNT                            00000248 _DialMin
+00005acd IUPDT1                           00000248 V21C_D0
+0000473e Init_CID                         00000248 X9I
+00000328 It2Save                          00000249 ENDIN
+00000073 It2Sst                           00000249 C0R
+00000072 It2Sst1                          0000024a _AnswerIn
+00000062 ItPage0                          0000024b _AnswerOut
+00000070 ItSst1                           0000024c _AnswerShift
+00000071 ItSst                            0000024d _V23In
+00001272 ItTmp1                           0000024d C4R
+00000267 JIMAG                            0000024e C5R
+00000266 JREAL                            0000024e _V23Out
+00000214 LASTQ                            0000024f _V23Shift
+00001210 LAST_OUT                         00000250 _V21In
+0000122a MASK                             00000251 _V21Out
+000002ac MaxParmLen                       00000252 C9R
+00000327 ModemIn                          00000252 _V21Shift
+00000326 ModemOut                         00000253 C0I
+00000325 ModemStat                        00000253 _MinEng
+00006819 Modul                            00000254 _FiltFunc
+0000020a ModulSeq                         00000257 C4I
+000057ed NONE                             00000258 C5I
+00000209 NbSamp                           0000025c C9I
+00000205 ONE                              0000025d BETA
+00001226 OUT                              0000025e WREAL
+00001276 One                              0000025f WIMAG
+00000301 OsStack                          00000260 EREAL
+0000006f P0Tmp1                           00000261 EIMAG
+00000268 PHERR                            00000262 YREAL
+0000026a PHFREQ                           00000263 YIMAG
+00000265 PIMAG                            00000264 PREAL
+0000006e POsStack                         00000265 PIMAG
+00000264 PREAL                            00000266 JREAL
+00000211 PtCos                            00000267 JIMAG
+00000210 PtSin                            00000268 PHERR
+0000020d RIN                              00000269 FROFF
+00000215 RPQUAD                           0000026a PHFREQ
+0000126f RPtIn                            0000026b XXJ1
+00005974 RTSK0                            0000026c XXJ2
+000058e2 RTSK10                           0000026d _ALPHA
+000058c3 RTSK12                           0000026e AVESQR
+00005965 RTSK4                            0000026f HYST
+0000595e RTSK8                            0000026f V21COut
+00005922 RTSK9                            00000270 BDCNTR
+00005a92 RUPDT1                           00000271 Y0DEL2
+00005aa6 RUPDT2                           00000272 Y0DEL1
+0000020e RXFRQ                            00000273 SIGS0
+000058ac RXIIR                            00000274 YRLP1
+0000020f RXPHS                            00000275 YRLP2
+00006aa0 RXV21                            00000276 YILP1
+00006c2d RXV23                            00000277 YILP2
+00007008 Rec4                             00000278 SIGS1
+00007029 RecUartWait                      00000279 CNVFL
+00000206 S1CNT                            0000027b FifoOut
+00005c13 S1DET                            00000280 _Date_Time_Buf
+0000122d SEND_IN                          00000284 _CLIP_Buf
+0000122e SEND_OUT                         0000028e _FCLIP_Buf
+00000273 SIGS0                            00000297 FifoIn
+00000278 SIGS1                            00000298 _No_CLIP_Buf
+00005891 SINGEN                           00000299 _Call_Name_Buf
+00000226 STAT2                            000002a3 _No_Call_Name_Buf
+00001223 STATE                            000002a4 _Call_Type_Buf
+00000203 STATUS                           000002a5 _FCLIP_Type_Buf
+00000207 STWRD                            000002a6 CID_Byte
+00005bbb SXDET                            000002a7 _CID_ring
+00001235 ScCount64                        000002a8 _CID_status
+00001233 ScShift0                         000002a9 CID_Checksum
+00001234 ScShift1                         000002aa CID_Len
+00004770 Scan_CID                         000002ab CID_ParmLen
+00001236 Scram0                           000002ac MaxParmLen
+00000208 Shape                            000002ad BufNum
+00000212 ShiftI                           000002ae _CID_ret
+00000213 ShiftR                           000002af _CID_Ptr
+00001274 Sin1                             000002b7 Buffer_ptr
+00001275 Sin2                             000002b8 CID_temp
+00000335 SinBuf                           000002b9 V23C_D0
+00006e16 SinGenFSK                        000002e4 V23COut
+00007106 StartUart0                       000002f8 ForDA
+0000123a TBuffr                           000002f9 FromAD
+0000022a TIMIND                           000002fa _mdm_sta
+00001249 TLast                            00000300 begin5
+00000228 TMFUNC                           00000300 ETmp1
+0000021c TMP0                             00000301 OsStack
+00000223 TMP1                             00000301 end5
+00000219 TMP2                             00000325 ModemStat
+00000220 TMP3                             00000326 ModemOut
+00000216 TMP4                             00000327 ModemIn
+00000217 TMP5                             00000328 It2Save
+00005980 TMRCV                            00000335 SinBuf
+0000124a TPtIn                            00000343 CosBuf
+0000124b TPtOut                           00000351 _Phi1
+00006c7c TRIGGER                          00000352 _Phi2
+00001325 TXData                           00000353 _DeltaPhi1
+00001323 TXFreq                           00000354 _DeltaPhi2
+00001324 TXPhase                          00000355 _Ampl1
+00006cf7 TXV21                            00000356 _Ampl2
+00006d6c TXV23                            00000357 _DtmfFlag
+00006e8e Timer                            00001200 edata
+00000077 Total4                           00001200 .data
+00001230 TransCount                       00001200 FIRST_OUT
+00000200 TxTmp0                           00001210 LAST_OUT
+00000201 TxTmp1                           00001211 Cmd1
+00000202 TxTmp2                           00001211 BufferTrans
+0000021f UIDEL1                           00001212 Cmd2
+00000218 URDEL1                           00001221 BufferTransLast
+00001222 UartStatus                       00001222 UartStatus
+0000718c UartTransmit                     00001223 STATE
+00007052 UpdatPtr                         00001224 BIT_COUNT
+0000122f V14TCpt8                         00001225 IN
+00000247 V21AOut                          00001226 OUT
+00000220 V21A_D0                          00001227 Descram0
+0000026f V21COut                          00001228 Descram1
+00000248 V21C_D0                          00001229 CPT64
+00005d8a V21FIRA                          0000122a MASK
+00005d98 V21FIRC                          0000122b D1803
+000002e4 V23COut                          0000122c D0201
+000002b9 V23C_D0                          0000122d SEND_IN
+00005da7 V23FIRC                          0000122e SEND_OUT
+0000022b V23IN                            0000122f V14TCpt8
+00000221 WIDEL1                           00001230 TransCount
+00000222 WIDEL2                           00001231 Bit4
+0000025f WIMAG                            00001232 Bit4_V22
+0000021a WRDEL1                           00001233 ScShift0
+0000021b WRDEL2                           00001234 ScShift1
+0000025e WREAL                            00001235 ScCount64
+0000023f X0I                              00001236 Scram0
+00000234 X0R                              0000123a TBuffr
+00000244 X5I                              00001249 TLast
+00000239 X5R                              0000124a TPtIn
+00000247 X8I                              0000124b TPtOut
+0000023c X8R                              0000124f _RBuffr
+00000248 X9I                              0000126e _RLast
+0000023d X9R                              0000126f RPtIn
+0000020b XBITS                            00001270 _RPtOut
+00000204 XDATA                            00001272 ItTmp1
+00000224 XIM1                             00001274 Sin1
+00000225 XIM2                             00001275 Sin2
+0000020c XOUT                             00001276 One
+0000021d XRM1                             00001280 .bss
+0000021e XRM2                             00001280 _s0
+00004cb3 XShape0                          00001281 _V14NbStop
+00004ff3 XShape1                          00001282 _Modul
+00005373 XShape2                          00001283 _Connect
+0000023e XTMPI                            00001284 _Command
+00000233 XTMPR                            00001285 _RPtOut0
+0000026b XXJ1                             00001286 _Guard
+0000026c XXJ2                             00001287 _TGGain
+00000272 Y0DEL1                           00001288 _transfer_buf
+00000271 Y0DEL2                           000012a8 _Loop
+00000276 YILP1                            000012a9 _s98
+00000277 YILP2                            000012aa _s99
+00000263 YIMAG                            000012ab _Mode
+00000262 YREAL                            000012ac _AS
+00000274 YRLP1                            000012ad _TVGain
+00000275 YRLP2                            000012ae _speed
+00001318 _AGCTHRESH                       000012af _V22TR1
+00001317 _AGCTHRESL                       000012b0 _V22TR2
+0000026d _ALPHA                           000012b1 end
+000012ac _AS                              00001316 _FSKREG
+00000355 _Ampl1                           00001317 _AGCTHRESL
+00000356 _Ampl2                           00001318 _AGCTHRESH
+00006330 _AnalyseOff                      00001319 FSKCOUNT
+000066ae _AnalyseOn                       0000131a FSKCHAR
+00000213 _AnswerFilter                    0000131b FSKC
+0000024a _AnswerIn                        0000131c AGCSamp
+0000024b _AnswerOut                       0000131d AGCGAIN
+0000024c _AnswerShift                     0000131f AGCTEMP
+0000023e _AnswerThreshold                 00001320 DecCOUNT
+00006171 _B00                             00001323 TXFreq
+0000617f _B01                             00001324 TXPhase
+00006a3d _Busy                            00001325 TXData
+000002af _CID_Ptr                         00001329 _TXGain
+000002ae _CID_ret                         00001355 __const_run
+000002a7 _CID_ring                        00004020 cinit
+00000060 _CID                             00004039 .text
+000002a8 _CID_status                      00004063 CPTD
+000069e3 _CLI0                            000040b4 _InitFiltFunc
+000069e9 _CLI1                            000041d0 BusyFilt
+000069ed _CLI2                            0000421c _Send1300
+000069f1 _CLI3                            00004245 _InitDTMF
+000069f6 _CLI4                            00004253 _Dial
+000069fa _CLI5                            000042c7 _Calling
+000069ff _CLI6                            0000452c _transfer_data
+00006a05 _CLI7                            0000462b _Manage_CID
+00000284 _CLIP_Buf                        0000467b _CallerID
+00006a52 _CON1275                         0000472b _reset_imp
+00006a5b _CON7512                         0000473e Init_CID
+00006a4d _CONNECT                         00004770 Scan_CID
+00006e5d _CUInit                          00004931 _Init_Ptrs
+00000299 _Call_Name_Buf                   00004954 resV23
+000002a4 _Call_Type_Buf                   0000496d CheckCPE
+0000467b _CallerID                        000049f6 DemodSymb
+000042c7 _Calling                         00004b78 DCos24
+00007964 _Carrier                         00004b99 DSin24
+00006a2e _CidDT                           00004bba DCos12
+00006a26 _CidRing                         00004bbf DSin12
+00001284 _Command                         00004cb3 XShape0
+00006a1f _Connect2400                     00004ff3 XShape1
+00001283 _Connect                         00005373 XShape2
+00006a18 _Connect1200                     000056b3 COSOFF
+00000241 _CptdFilter                      000057b4 CCI
+00000280 _Date_Time_Buf                   000057ed NONE
+00000353 _DeltaPhi1                       0000583d _SendCmd
+00000354 _DeltaPhi2                       0000585e ENCODE
+00000205 _DialFilter                      00005891 SINGEN
+00000245 _DialIn                          000058a0 COSGEN
+00000248 _DialMin                         000058ac RXIIR
+00000246 _DialOut                         000058c3 RTSK12
+00000247 _DialShift                       000058e2 RTSK10
+0000023d _DialThreshold                   00005922 RTSK9
+00004253 _Dial                            0000595e RTSK8
+00000357 _DtmfFlag                        00005965 RTSK4
+00005fc1 _EightKHz                        00005974 RTSK0
+000074f8 _EndOfV22Ans                     00005980 TMRCV
+00007552 _EndV22Call                      000059c0 DLUPDT
+00006a14 _Error                           00005a92 RUPDT1
+0000028e _FCLIP_Buf                       00005aa6 RUPDT2
+000002a5 _FCLIP_Type_Buf                  00005acd IUPDT1
+00005fc6 _FConnect                        00005b18 IFIR
+00005fce _FDisConnect                     00005b2e CMULT1
+00001316 _FSKREG                          00005b43 AGC
+000073f8 _FV21                            00005bbb SXDET
+000075a1 _FV22                            00005c13 S1DET
+000076ac _FV22b                           00005c42 _modemini
+0000739e _FV23                            00005c91 _ToneTable
+000062d0 _F_ATA                           00005ce9 Dtmf
+00000254 _FiltFunc                        00005d8a V21FIRA
+00006fd3 _GetData                         00005d98 V21FIRC
+00006260 _GetNext                         00005da7 V23FIRC
+0000667e _GetPrevious                     00005db6 _InitV23
+00001286 _Guard                           00005def _InitV21
+00005eb3 _InitAnswer                      00005e28 _InitTot
+00005e77 _InitBusy                        00005e3b _InitDial
+00004245 _InitDTMF                        00005e77 _InitBusy
+00005e3b _InitDial                        00005eb3 _InitAnswer
+000040b4 _InitFiltFunc                    00005fc1 _EightKHz
+000069db _InitNotch                       00005fc6 _FConnect
+00006a64 _InitRXV21                       00005fce _FDisConnect
+00006bf8 _InitRXV23                       00006149 End_V23
+000070e0 _InitScram                       00006149 End_V21
+00006d3a _InitTXV21                       00006159 _table_read
+00006dd1 _InitTXV23                       00006171 _B00
+00005e28 _InitTot                         00006179 IB00
+00005def _InitV21                         0000617f _B01
+00005db6 _InitV23                         00006187 IB01
+00004931 _Init_Ptrs                       0000618d _tolower
+000072d5 _Init_V21                        000061a5 _scan
+00007253 _Init_V23                        000061c4 _Print
+000012a8 _Loop                            00006207 _ReadTable
+00006701 _ManageUart                      00006249 _PrintTab
+0000462b _Manage_CID                      00006260 _GetNext
+00000253 _MinEng                          00006288 _PrintError
+0000738e _ModemFSK                        00006297 _isdigit
+000012ab _Mode                            000062c1 _PrintOk
+00001282 _Modul                           000062d0 _F_ATA
+00006a0e _NoCarrier                       00006330 _AnalyseOff
+00006a36 _NoDial                          0000667e _GetPrevious
+00000298 _No_CLIP_Buf                     000066ae _AnalyseOn
+000002a3 _No_Call_Name_Buf                00006701 _ManageUart
+00006a0c _OK                              000067b1 _main
+00000351 _Phi1                            000067c3 _PrintFSK
+00000352 _Phi2                            00006819 Modul
+00006288 _PrintError                      000069bf notch
+000067c3 _PrintFSK                        000069db _InitNotch
+000062c1 _PrintOk                         000069e3 _CLI0
+00006249 _PrintTab                        000069e9 _CLI1
+000061c4 _Print                           000069ed _CLI2
+0000124f _RBuffr                          000069f1 _CLI3
+0000126e _RLast                           000069f6 _CLI4
+00001285 _RPtOut0                         000069fa _CLI5
+00001270 _RPtOut                          000069ff _CLI6
+00006f97 _ReadData                        00006a05 _CLI7
+00006207 _ReadTable                       00006a0c _OK
+00006a94 _ResetFSK                        00006a0e _NoCarrier
+0000421c _Send1300                        00006a14 _Error
+0000583d _SendCmd                         00006a18 _Connect1200
+00006f69 _SendData                        00006a1f _Connect2400
+00007357 _SendFSK                         00006a26 _CidRing
+000070fa _StartUart                       00006a2e _CidDT
+00001287 _TGGain                          00006a36 _NoDial
+000012ad _TVGain                          00006a3d _Busy
+00001329 _TXGain                          00006a40 _V22BIS
+0000006d _Tim0                            00006a44 _V22
+00005c91 _ToneTable                       00006a47 _V21
+00000243 _TotIn                           00006a4a _V23
+00000244 _TotOut                          00006a4d _CONNECT
+00001281 _V14NbStop                       00006a52 _CON1275
+00007116 _V14Send                         00006a5b _CON7512
+00007142 _V14Stat                         00006a64 _InitRXV21
+000072f4 _V21Cont                         00006a94 _ResetFSK
+00000221 _V21Filter                       00006aa0 RXV21
+00000250 _V21In                           00006b08 AgcFSK
+00000251 _V21Out                          00006b4f FSKDec
+00000252 _V21Shift                        00006bb7 BandPasCoef
+00000240 _V21Threshold                    00006bf8 _InitRXV23
+00006a47 _V21                             00006c2d RXV23
+00006a40 _V22BIS                          00006c7c TRIGGER
+00006a44 _V22                             00006cf7 TXV21
+000012af _V22TR1                          00006d3a _InitTXV21
+000012b0 _V22TR2                          00006d6c TXV23
+000078d5 _V22b                            00006dd1 _InitTXV23
+00007272 _V23Cont                         00006e16 SinGenFSK
+0000022f _V23Filter                       00006e5d _CUInit
+00006a4a _V23                             00006e69 AUInit
+0000024d _V23In                           00006e8e Timer
+0000024e _V23Out                          00006f69 _SendData
+0000024f _V23Shift                        00006f97 _ReadData
+0000023f _V23Threshold                    00006fd3 _GetData
+00000065 __STACK_SIZE                     00007008 Rec4
+00000045 __const_length                   00007029 RecUartWait
+00001355 __const_run                      00007052 UpdatPtr
+000074b1 _abort                           000070c3 _descramble
+00007971 _c_int0                          000070e0 _InitScram
+000070c3 _descramble                      000070fa _StartUart
+000074c5 _detectS0                        00007106 StartUart0
+00006297 _isdigit                         00007116 _V14Send
+000067b1 _main                            00007142 _V14Stat
+000002fa _mdm_sta                         00007159 Get4
+00005c42 _modemini                        0000716c Get2
+0000472b _reset_imp                       0000718c UartTransmit
+00001280 _s0                              00007226 _scramble
+00007492 _s1snd                           00007253 _Init_V23
+000012a9 _s98                             00007272 _V23Cont
+000012aa _s99                             000072d5 _Init_V21
+000061a5 _scan                            000072f4 _V21Cont
+00007226 _scramble                        00007357 _SendFSK
+00007454 _sendmarks                       0000738e _ModemFSK
+000012ae _speed                           0000739e _FV23
+00006159 _table_read                      000073f8 _FV21
+0000618d _tolower                         00007454 _sendmarks
+00001288 _transfer_buf                    00007492 _s1snd
+0000452c _transfer_data                   000074b1 _abort
+00000203 begin4                           000074c5 _detectS0
+00000300 begin5                           000074f8 _EndOfV22Ans
+00004020 cinit                            00007552 _EndV22Call
+00001200 edata                            000075a1 _FV22
+000012b1 end                              000076ac _FV22b
+00000301 end5                             000078d5 _V22b
+000079a8 etext                            00007964 _Carrier
+000069bf notch                            00007971 _c_int0
+00004954 resV23                           000079a8 etext
+
+[434 symbols]

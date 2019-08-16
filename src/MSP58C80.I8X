@@ -1,0 +1,46 @@
+*******************************************************************************
+*   File:           msp58c80.i8x
+*
+*   Description:    This is the include file for MSP58C80 'A8X' applications
+*
+*******************************************************************************
+
+IsDsk	.set	1		; if !=0 program is compiled for DSK board
+
+
+*******************************************************************************
+*	Registers
+*******************************************************************************
+
+*********************** memory mapped registers *******************************
+DRR         .equ    0000h      ; serial port receive register
+DXR         .equ    0001h      ; serial port transmit register
+		.if		IsDsk
+		.else
+TIM         .equ    0002h      ; timer register
+PRD         .equ    0003h      ; period register
+		.endif
+IMR         .equ    0004h      ; interrupt mask register
+                               ; reserved memory
+RTC         .equ    0006h      ; real-time counter
+FREQ        .equ    0007h      ; frequency control register
+MEMTYPE     .equ    0008h      ; external memory interface reg
+DI          .equ    0009h      ; D port input register
+DO          .equ    000Ah      ; D port output register
+DDIR        .equ    000Bh      ; D port direction register
+BI          .equ    000Ch      ; B port input register
+BO          .equ    000Dh      ; B port output register
+                               ; reserved memory
+BDIR        .equ    000eh      ; B port direction register
+ADAC        .equ    0010h      ; sigma-delta ADC/DAC control reg
+SDAD        .equ    0011h      ; sigma-delta ADC input register
+SDDA        .equ    0012h      ; sigma-delta DAC output register
+SAAD        .equ    0013h      ; successive-approximation ADC reg
+
+************************** I/O mapped registers *******************************
+ADB         .equ    0008h      ; alternate data buffer read
+AAL         .equ    0009h      ; alternate address low
+AAH         .equ    000Ah      ; alternate address high
+ADBP        .equ    000Ch      ; alternate data buffer (pre/post)
+AALP        .equ    000Dh      ; alternate address low (prefetch)
+

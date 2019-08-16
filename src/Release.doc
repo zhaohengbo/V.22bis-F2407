@@ -1,0 +1,113 @@
+
+
+release v063
+
+- CID and CID_Status under interrupt (_Fdisconnect in Main.asm)
+
+release v063w1
+
+- correct connect problem for V22 answer at high level (v22b.c)
+- transmit gains V23 set to ~ -10 dBm (param.h)
+
+release v063w2
+
+- correct connect problem in V22 answer (V22bis mode) (v22b.c)
+- add ATS0= , ATS0?, automatic answer (mainc.c, cid.c)
+
+release	v063w3
+
+- modify carrier detect condition in answer to 3dB step (V22b.c)
+- modify connection timer in V21 to fix first erroneous character
+ problem (V21V23.c line 103)
+- modify V23 carrier detection threshold (param.h)
+
+release v063w4
+
+- protect sample IT by masking SDINT in IMR (in order to prevent RESET
+in case of MIPS overrun, problem occured in V21) in main.asm
+
+- put StartUart() after delay of 25 ms for AGC convergence (V21V23.c)
+- increase NSM for smooth carrier lost
+
+release v063w5
+
+-bug fix in V.21 answering, no SendFSK (tone generation), directly go to UART (v21v23.c),
+same bug fix for V.23 answering
+-timing for AGC convergence reset to 20ms for V.21 (v21v23.c)
+-protect CID changes: Before starting a new mode with initialization, etc.  
+ the variable CID has to be set to NoMode or interrupts have to be disabled 
+ (CID changes: CID->CPTD, CPTD->V22bis/V22, CPTD->V21, CPTD->V23)
+ in files call.c, v22b.c, v21v23.c
+-bug fix in V.21 calling and answering: add initialization of transmit Uart
+ and receive Uart: call _InitScram, call StartUart0 (TXFSK.asm)
+ Transmit Uart enabled when CID set to V21, receive Uart enabled after carrier detection
+-same bug fix for V.23
+
+release v064w5
+
+- 8khz V22bis calling transmit ok
+- 8kHz calling receive: AGC close to final, cosine branch ok, sine branch ?
+
+release v64w6
+
+- 8kHz calling receive sine branch seems ok
+- amplitude a little too low
+- received data wrong
+- trace mode and dram active
+- inversion branch sinus, reglage gain -> ok
+
+release v64w7
+
+- correct low pass filter after demodulation for 8kHz
+- ok demodulation 8kHz calling
+- problem in carrier detect, answering
+- trace mode and dram active, 12 mips
+
+release	v064w8
+
+- suppress RSCNTR
+- correct bug in TMRCVC.ASM line 112 (TIMIND)
+- tune carrier detect
+- test BER at -43
+- receive with no error down to -55dBm; -6dBm max
+
+release v64w9
+
+- error in management of tone generation; no intialisation
+ in answering mode; no call to InitTot();
+- error in timing in V22b.c; before V22/V22bis timing are at 8kHz,
+ after,	they are at 1kHz
+- error in timing for 2100Hz; timing are in 9.6kHz and not in 8kHz
+- (demod.asm) error in end of sOrigin4 (ModemIn loading)
+- (v22b.c) return 0 at the end of FV22b (line 280)
+- level of guard tone too high
+- adjusted transmit level
+- V22/V22bis ok for calling and answer
+- lack of eint before modulation in V22it.asm line 78
+- 7.2mips full load ok
+
+release v065
+
+-change filter coefficients for dial tone filter in order to
+ obtain larger detection band
+
+release f066
+
+- ok for DSK 320f206
+- not cleaned
+- flag IsDsk=1; means that software is configured for DSK f206
+- flag CBacc=1; means that instruction code has been added to test bacc instructions
+
+release V067
+
+- (initdsk.asm) line 37: suppress monitor option, correct PMST error.
+- (initdsk.asm) end : supress AIC test routine (.if 0)
+- (initdsk.asm) begin and line 96: suppress unused Stack.
+
+release V067B
+
+- (mainc.c) line 360: correct release number
+			line 103: suppress unused lines
+			line 360: enable mips display for 58c8x
+- (v22b.c)  begin : comment
+            line 266: improve comment

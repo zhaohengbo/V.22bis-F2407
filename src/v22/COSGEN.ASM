@@ -1,0 +1,54 @@
+;
+;
+;       SUBROUTINE      ;       COSGEN
+;       PURPOSE         ;       COSINE GENERATION
+;
+;       TASK    ;       GIVEN A TABLE OF 257 COSINE VALUES
+;                       WITH START ADDRESS COSOFF, AND AN
+;                       INDEX TO THIS TABLE, GENERATE THE COSINE
+;                       VALUE.
+;
+;       ENTRY CONDITION :       THE ANGLE INDEX IS CONTAINED
+;                               IN THE HIGHER ACCUMULATOR.
+;								0 = 0  ; 7fff=8000=PI   ffff=2*PI
+;
+;       EXIT CONDITION  :       THE COSINE OF THE ANGLE IS RETURNED
+;                               IN TEMPORARY LOCATION TMP0.
+;
+;       DESCRIPTION     :       THE COSINE GENERATION TABLE
+;                               CONTAINS 257 VALUES WITH;
+;
+;               COS[0] = 1.0    AND     COS[256] = -1.0
+;
+;       THEREFORE THE ANGLE INDEX 0 MAPS TO -PI AND ANGLE INDEX
+;       128 MAPS TO PI.  GIVEN A 16-BIT ANGLE INDEX AS A Q0 NUMBER,
+;       THE IMPLEMENTATION ISOLATES THE UPPER 8-BITS, ADDS THE TABLE
+;       OFFSET VALUE TO THE 8-BITS, AND READS THE COS VALUE INTO
+;       RAM LOCATION TMP0.
+;
+;
+;       REMEMBER ANGLE INDEX IS THE HIGHER ORDER BITS OF ACC
+;
+; No of cycles: 13
+; No of stack levels used: 1
+;
+COSGEN
+     ROVM            ; PREPARE FOR ABSOLUTE VALUE
+     ABS             ; TREAT ANGLE INDEX AS 2'S COMP.
+     SOVM
+;			 THE PREVIOUS INSTRUCTION INSURES
+;			 THAT ABS(>80000000) = 80000000
+;
+;       IMPLEMENT A RIGHT SHIFT OF 8 PLACES
+;
+     SACH    TMP0    ;  PUT AWAY TEMPORARILY
+     LAC     TMP0,9  ;  ISOLATE UPPER 9-BITS IN ACCH
+     ABS
+     SACH    TMP0    ;  STORE THE 9 MSB'S
+
+     LALK    COSOFF  ;  BRING IN THE OFFSET
+     ADD     TMP0    ;  FORM THE LOOK-UP ADDRESS
+;			            INTO COS TABLE
+     TBLR    TMP0    ; READ THE COS VALUE INTO TMP0
+
+     RET

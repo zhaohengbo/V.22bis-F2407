@@ -1,0 +1,332 @@
+*******************************************************************************
+*   File:           dsp20.i8x
+*
+*   Description:    This is the include file for the dsp20 modem.
+*
+*
+*******************************************************************************
+
+
+
+;
+; PLL EQUATES
+;
+G1:     .equ     203    ; offset compensation
+G2:     .equ     20     ; frequency compensation
+INVPI:  .equ     1304   ; Pi inverted IN (4,12) FORMAT
+;
+G3:     .equ     0300h
+BJ1:    .equ     3329
+BJ2:    .equ     -2032
+AJ1:    .equ     -1640
+;
+;
+;       HIGH PASS FILTER CONSTANT
+;
+TAU:    .equ     14      ;16 - 14
+
+
+
+;
+;---------------------------------
+;
+; page 0
+;
+;---------------------------------
+;
+_CID    .usect  "TStat",1   ; mode for the sample interrupt
+FifoOutCnt .usect "TStat",1 ; decrementing counter for ItSample
+ItPage0 .usect  "TStat",11  ; it context saving zone
+_Tim0   .usect  "TStat",1   ; timer soft
+POsStack .usect "TStat",1   ; Pointer on OsStack
+P0Tmp1  .usect  "TStat",1   ; temporary variable used by ItSample
+
+
+;       DATA MEMORY (RAM) ASSIGNMENTS
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+; mpage4 is supposed to be one full page for modem, not obliged to be page 4
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+begin4  .usect  "mpage4",0  ; first word of mpage4
+
+STATUS: .usect "mpage4",1   ; status of the modem
+    ; 0-1 : speed
+        ; 00 FOR 300 BPS (FSK)
+        ; 01 FOR 600 BPS
+        ; 10 FOR 1200 BPS
+        ; 11 FOR 2400 BPS
+    ; 2 YW 16jul97 0=originate 1=answer
+    ; 3   : analog loop back
+    ; 4-5 : transmit status
+        ; 00 idle
+        ; 01 answer tone
+        ; 10 digital loopback or transmit
+        ; 11 transmit modulation
+    ; 6-7 : receive status
+        ; 00 IDLE
+        ; 01 CALL PROGRESS MONITORING
+        ; 10 DATA MODE
+    ; extension
+    ; 8-9 : FSK mode
+        ; 00 V21
+        ; 01 V23 T1200 R75
+        ; 10 V23 T75 R1200
+        ; 11 V23 R1200 no transmit
+    ; 10-11 : guard tone
+        ; 00 no guard tone
+        ; 01 1800
+; 
+AnswerMask  .equ    4   ; mask for bit 2 in STATUS register
+ANMSK:  .equ     3      ; bit number for analog loop in STATUS register
+                        ; 1=ANALOG loop
+; set bits 5 & 4 in STATUS = 10 DIGITAL LOOPBACK
+RMMSK:  .equ    0C0h    ; receive mode mask
+NTXMSK: .equ    0CFh    ; neg of trans mode mask (8bit)
+NRCMSK: .equ    03Fh    ; neg of receive mode mask (8bit)
+NSPMSK: .equ    0FCh    ; neg of speed mask (8bit)
+TXSH:   .equ    04h     ; first transmit mode bit (shift)
+RCSH:   .equ    06h     ; first receive mode bit (shift)
+
+
+XDATA:  .usect "mpage4",1
+ONE:    .usect "mpage4",1  ; CONSTANT "1"
+S1CNT:  .usect "mpage4",1  ; S1 detection counter
+STWRD:  .usect "mpage4",1  ; status word, 80 after reset 82 after reset command
+    ; 0-3 received bit
+    ; 4   1=s0 detected
+    ; 5   1=s1 detected
+    ; 6   1=energy detected
+    ; 7  not used
+    ; 8-15 used for protocol between demodulation and background tasks
+BitSt4  .set    4   ; bit 4 of STWRD
+BitSt5  .set    5   ; bit 5 of STWRD
+BitEne  .set    6   ; position of energy detect
+
+Shape	.usect "mpage4",1	; variable for XShape
+NbSamp  .usect "mpage4",1
+ModulSeq .usect "mpage4",1	; sequence of 3 symbols
+; bit 0-1  sequence number for the modulation
+; bit 15   if set mean modulation not finished
+
+
+XBITS:  .usect "mpage4",1  ; bits to be transmitted
+XOUT:   .usect "mpage4",1  ; OUTPUT SAMPLE
+RIN:    .usect "mpage4",1  ; INPUT SAMPLE
+ForDA   .usect  "SMain",1   ; next sample to send on DA
+FromAD  .usect	"SMain",1
+RXFRQ:  .usect "mpage4",1  ; shift in receive demodulation table between cosin and sinus 
+RXPHS:  .usect "mpage4",1  ; pointer in receive demodulation table
+PtSin   .usect "mpage4",1  ; imaginary delay line for transmitter
+PtCos   .usect "mpage4",1
+ShiftI  .usect "mpage4",1  ; real delay line for transmitter
+ShiftR  .usect "mpage4",1
+LASTQ:  .usect "mpage4",1  ; last quadrant for transmitter
+RPQUAD: .usect "mpage4",1  ; quadrant index for receiver
+TMP4:   .usect "mpage4",1
+TMP5:   .usect "mpage4",1
+;
+;       RAM LOCATION DEFINITIONS FOR THE REAL
+;       RECEIVER LOWPASS FILTER
+;
+URDEL1: .usect "mpage4",1        ; RECEIVE IN-PHASE SIGNAL DELAYED BY 1
+TMP2:   .usect "mpage4",1        ; PARTIAL FILTERED SIGNAL w(n)
+WRDEL1: .usect "mpage4",1        ; wr(n-1)
+WRDEL2: .usect "mpage4",1
+TMP0:   .usect "mpage4",1
+XRM1:   .usect "mpage4",1
+XRM2:   .usect "mpage4",1
+;
+;       RAM LOCATION DEFINITIONS FOR THE IMAGINARY
+;       RECEIVER LOWPASS FILTER
+;
+UIDEL1: .usect "mpage4",1
+TMP3:   .usect "mpage4",1
+WIDEL1: .usect "mpage4",1
+WIDEL2: .usect "mpage4",1
+TMP1:   .usect "mpage4",1
+XIM1:   .usect "mpage4",1
+XIM2:   .usect "mpage4",1
+;
+;       TIMING RECOVERY VARIABLES
+;
+STAT2:  .usect "mpage4",1        ; TIMING REC. STATUS REG.
+AVECNT: .usect "mpage4",1 ; AVERAGE OF MAX. INDEX
+TMFUNC: .usect "mpage4",1    ; average timing function error
+IRCNT:  .usect "mpage4",1    ; no action timing counter
+TIMIND: .usect "mpage4",1    ; time index
+
+;
+;       INTERPOLATOR DELAY LINES
+;
+IR0:    .usect "mpage4",1
+IR1:    .usect "mpage4",1
+IR2:    .usect "mpage4",1
+IR3:    .usect "mpage4",1
+II0:    .usect "mpage4",1
+II1:    .usect "mpage4",1
+II2:    .usect "mpage4",1
+II3:    .usect "mpage4",1
+;
+;       EQUALIZER DELAY LINES
+;
+XTMPR:  .usect "mpage4",1        ;Temporary location of latest sample
+;
+X0R:    .usect "mpage4",5        ;Ten most recent real samples
+X5R:    .usect "mpage4",3
+X8R:    .usect "mpage4",1
+X9R:    .usect "mpage4",1
+;
+XTMPI:  .usect "mpage4",1       ;Temp. loc. for latest imag sample
+;
+X0I:    .usect "mpage4",5       ;Ten most recent imag. samples
+X5I:    .usect "mpage4",3
+X8I:    .usect "mpage4",1
+X9I:    .usect "mpage4",1
+;
+;       EQUALIZER COEFFICIENTS
+;
+C0R:    .usect "mpage4",4  ;Real part of equ. coeff.
+C4R:    .usect "mpage4",1
+C5R:    .usect "mpage4",4
+C9R:    .usect "mpage4",1
+;
+C0I:    .usect "mpage4",4        ;Imag part of equ. coeff.
+C4I:    .usect "mpage4",1
+C5I:    .usect "mpage4",4
+C9I:    .usect "mpage4",1
+;
+;       EQUALIZER       OUTPUT
+;
+BETA:   .usect "mpage4",1
+WREAL:  .usect "mpage4",1
+WIMAG:  .usect "mpage4",1
+;
+;       UPDATE ERROR
+;
+EREAL:  .usect "mpage4",1
+EIMAG:  .usect "mpage4",1
+;
+;
+;
+;       PLL RAM
+;
+YREAL:  .usect "mpage4",1
+YIMAG:  .usect "mpage4",1
+;
+PREAL:  .usect "mpage4",1
+PIMAG:  .usect "mpage4",1
+JREAL:  .usect "mpage4",1
+JIMAG:  .usect "mpage4",1
+PHERR:  .usect "mpage4",1
+FROFF:  .usect "mpage4",1
+PHFREQ: .usect "mpage4",1
+XXJ1:   .usect "mpage4",1
+XXJ2:   .usect "mpage4",1
+;
+;       AGC     RAM
+;
+_ALPHA:  .usect "mpage4",1
+AVESQR: .usect "mpage4",1
+HYST:   .usect "mpage4",1
+;
+;       BAUD COUNTER
+;
+BDCNTR: .usect "mpage4",1
+;
+;       SXDET   RAMS
+;
+Y0DEL2: .usect "mpage4",1
+Y0DEL1: .usect "mpage4",1
+SIGS0:  .usect "mpage4",1
+YRLP1:  .usect "mpage4",1
+YRLP2:  .usect "mpage4",1
+YILP1:  .usect "mpage4",1
+YILP2:  .usect "mpage4",1
+SIGS1:  .usect "mpage4",1
+;
+;       DEBUGGING PHASE RAMS
+;
+CNVFL:  .usect "mpage4",1
+
+Last4   .usect  "mpage4",0
+Total4  .set    Last4-begin4
+
+;
+; temporary variable for transmit
+;
+TxTmp0  .usect "mpage4_1",1
+TxTmp1  .usect "mpage4_1",1
+TxTmp2  .usect "mpage4_1",1
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+;       PAGE 5 RAM ASSIGNEMENTS
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+begin5  .usect  "mpage5",0  ; addresse of first word for modem in mpage5
+
+
+;        .IF     TRACE
+;YW      .usect "mpage5",3   ; SCRATCH PAD MEMORY
+;        .ENDIF
+;
+; REAL FILTER SAMPLE
+ETmp1   .usect "mpage5",1   ; temporary variable used in SampleIt (and modulation)
+
+end5    .usect "mpage5",0  ; first word after modem data in mpage5
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+;   Relocatable pages
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+SinBuf   .usect  "ModBuf",14   ; temporary buffer for modulation
+CosBuf	 .usect	 "ModBuf",14
+
+
+; ---- v14 and scrambling 
+; common receive, transmit
+UartStatus .usect "Uart1",1     ; status of UART
+
+; --- receive (from demodulation)
+                
+STATE    .usect  "Uart1",1      ; state of the receiver UART (contain a
+                                ; jump address)
+BIT_COUNT .usect "Uart1",1      ; bit counter for the receiver UART
+IN       .usect  "Uart1",1      ; input pointer for the receive UART buffer
+OUT      .usect  "Uart1",1      ; output pointer for the receive UART buffer
+Descram0 .usect  "Uart1",1      ; temporary variable for descrambler
+Descram1 .usect  "Uart1",1      ; temporary variable for descrambler
+                                ; buffer
+FIRST_OUT .usect "Uart0",16     ; buffer for the receive UART
+LAST_OUT .usect  "Uart0",1      ; last element of the buffer
+CPT64    .usect  "Uart1",1      ; 64 counter for scrambler
+MASK     .usect  "Uart1",1      ; bit inversion mask used in scrambler
+D1803    .usect  "Uart1",1      ; shift register of the scrambler
+D0201    .usect  "Uart1",1      ; lsb part of the shift register (last 2 bit)
+
+; --- transmit (for modulation)
+
+SEND_IN  .usect  "Uart1",1      ; first free word in BufferTrans
+SEND_OUT .usect  "Uart1",1      ; first word to output in BufferTrans
+                                ; SEND_IN = SEND_OUT -> empty buffer
+V14TCpt8 .usect  "Uart1",1      ; 8 stop bit counter for V14 transmit
+TransCount .usect "Uart1",1     ; transmit bit counter
+Bit4     .usect  "Uart1",1      ; store of 4 bits
+Bit4_V22 .usect  "Uart1",1      ; added for V22 modulation
+ScShift0 .usect  "Uart1",1      ; msb of shift register (left shift) for
+                                ; transmission
+ScShift1 .usect  "Uart1",1      ; lsb of shift register (left shift)
+ScCount64 .usect "Uart1",1      ; counter 64 one for transmission
+Scram0   .usect  "Uart1",1      ; temporary variable for scrambler
+
+; buffer
+BufferTrans .usect "Uart0",16   ; UART transmission buffer
+Cmd1    .set    BufferTrans     ; command registers when not in V14 mode
+Cmd2    .set    BufferTrans+1   
+BufferTransLast .usect "Uart0",1 ; last location of the buffer
+
+
